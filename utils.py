@@ -54,7 +54,7 @@ if __name__ == "__main__":
     qtokens = ['Tell', 'me', 'what', 'the', 'notes', 'are', 'for', 'South', 'Australia']
     column = "string School/Club Team"
 
-    tokenizer = create_tokenizer({"base_class": "roberta", "base_name": "large"})
+    tokenizer = create_tokenizer({"base_class": "bert", "base_name": "large"})
 
     qsubtokens = []
     for t in qtokens:

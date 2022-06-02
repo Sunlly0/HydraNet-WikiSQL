@@ -25,6 +25,8 @@ if args.job == "train":
     if args.gpu is not None:
         os.environ["CUDA_VISIBLE_DEVICES"] = args.gpu
     # os.environ['TF_ENABLE_AUTO_MIXED_PRECISION'] = '1'
+
+    ## preprocess jobs
     conf_path = os.path.abspath(args.conf)
     config = utils.read_conf(conf_path)
 
@@ -51,6 +53,7 @@ if args.job == "train":
         else:
             raise Exception("model_type is not supported")
 
+    ## train_data loading
     featurizer = HydraFeaturizer(config)
     train_data = SQLDataset(config["train_data_path"], config, featurizer, True)
     train_data_loader = torch_data.DataLoader(train_data, batch_size=int(config["batch_size"]), shuffle=True, pin_memory=True)
@@ -60,6 +63,7 @@ if args.job == "train":
     step_per_epoch = num_samples / int(config["batch_size"])
     print("total_steps: {0}, warm_up_steps: {1}".format(config["num_train_steps"], config["num_warmup_steps"]))
 
+    ## model training
     model = create_model(config, is_train=True)
     evaluator = HydraEvaluator(model_path, config, featurizer, model, note)
     print("start training")

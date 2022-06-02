@@ -274,7 +274,7 @@ class SQLDataset(torch_data.Dataset):
             print(k, v.shape)
 
     def __len__(self):
-        return self.model_inputs["input_ids"].shape[0]
+        return self.model_inputs["input_ids"].shape[0] #360649，column 和question对
 
     def __getitem__(self, idx):
         return {k: v[idx] for k, v in self.model_inputs.items()}
@@ -292,7 +292,7 @@ if __name__ == "__main__":
 
     featurizer = HydraFeaturizer(config)
     train_data = SQLDataset(config["train_data_path"], config, featurizer, True)
-    train_data_loader = torch_data.DataLoader(train_data, batch_size=128, shuffle=True, pin_memory=True)
+    train_data_loader = torch_data.DataLoader(train_data, batch_size=64, shuffle=True, pin_memory=True)
     for batch_id, batch in enumerate(train_data_loader):
         print(batch_id, {k: v.shape for k, v in batch.items()})
 
